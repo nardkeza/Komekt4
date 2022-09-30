@@ -32,8 +32,38 @@ class _HomeScreenState extends State<HomeScreen>{
             decoration: 
               const InputDecoration(hintText: "Type the game name"),
           ),
+          actions: <Widget>[
+            ValueListenableBuilder<TextEditingValue>(
+              valueListenable: _inputController,
+              builder: ((context, value, child) {
+                return ElevatedButton(
+                  key: const Key("Accept"),
+                  style: yesStyle,
+                  onPressed: value.text.isNotEmpty
+                  ?(){
+                setState(() {
+                  //_handleNewItem(valueText);
+                  Navigator.pop(context);
+                });
+              } : null,
+              child: const Text("Accept"),
+              );
+              }
+              ),
+            child: ElevatedButton(
+              key: const Key("Cancel"),
+              style: noStyle,
+              child: const Text("cancel"),
+              onPressed: (){
+                setState(() {
+                  Navigator.pop(context);
+                });
+              }
+            )
+          ),
+        ]
         );
-     })
+     });
   }
   
 String game_name = "";
