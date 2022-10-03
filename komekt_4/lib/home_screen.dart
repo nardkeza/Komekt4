@@ -15,7 +15,7 @@ class _HomeScreenState extends State<HomeScreen>{
   @override
   void initState(){
     super.initState();
-    dropdownvalue = "Testing";
+    dropdownvalue = 'Testing';
   }
   final ButtonStyle yesStyle = ElevatedButton.styleFrom(
     textStyle: const TextStyle(fontSize:20),
@@ -25,6 +25,7 @@ class _HomeScreenState extends State<HomeScreen>{
     textStyle: const TextStyle(fontSize: 20),
     primary:  Colors.red
   );
+  
     Future<void> _displayTextInputDialog(BuildContext context) async {
     return showDialog(
         context: context,
@@ -40,16 +41,17 @@ class _HomeScreenState extends State<HomeScreen>{
               controller: _inputController,
             ),
             actions: <Widget>[
-            DropdownButton(value: dropdownvalue,
+            DropdownButton(
+             value: dropdownvalue,
              icon:const Icon(Icons.keyboard_arrow_down),
              items: items.map((String item){
               return DropdownMenuItem(value: item,
               child: Text(item),
               );
              }).toList(),
-             onChanged: (String? newValue){
+              onChanged: (String? value) { 
               setState(() {
-                dropdownvalue = newValue!;
+                dropdownvalue = value!;
               });
              },
              ),
@@ -85,7 +87,7 @@ class _HomeScreenState extends State<HomeScreen>{
         });
   }
   
-String game_name = "";
+String game_name = "Testing";
 
   // This widget is the root of your application.
   @override
@@ -97,10 +99,10 @@ String game_name = "";
         ),
       body: ListView(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
-        children: const<Widget>[
-          Card(child:ListTile(title: Text("Test"))
+        children: <Widget>[
+          Card(child:ListTile(title: Text(game_name), onTap: (){})
           ),
-          Card(child:ListTile(title:Text("Formatting Check"))
+          Card(child:ListTile(title:Text("Formatting Check"), onTap: (){})
           )
         ]
       ),

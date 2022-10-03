@@ -5,6 +5,8 @@ class GameScreen extends StatelessWidget {
 
   int row = 5;
   int column = 5;
+  String R = "red";
+  String Y = "yellow";
 
   var gridList = List.generate(5, (i) => 5, growable: false);
 
