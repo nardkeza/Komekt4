@@ -9,6 +9,14 @@ class HomeScreen extends StatefulWidget {
 }
 class _HomeScreenState extends State<HomeScreen>{
   final TextEditingController _inputController = TextEditingController();
+  var items = ['Testing','Friend 2','Friend 1'];
+  late String dropdownvalue;
+
+  @override
+  void initState(){
+    super.initState();
+    dropdownvalue = "Testing";
+  }
   final ButtonStyle yesStyle = ElevatedButton.styleFrom(
     textStyle: const TextStyle(fontSize:20),
     primary: Colors.green
@@ -17,53 +25,64 @@ class _HomeScreenState extends State<HomeScreen>{
     textStyle: const TextStyle(fontSize: 20),
     primary:  Colors.red
   );
-  Future<void> _displayTextInputDialog(BuildContext context){
-    return showDialog(context: context,
-     builder: (context){
-        return AlertDialog(
-          title: const Text ("Set the Game Name"),
-          content: TextField(
-            onChanged: (value){
+    Future<void> _displayTextInputDialog(BuildContext context) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text("Put in the game name and choose which friend"),
+            content: TextField(
+              onChanged: (value) {
+                setState(() {
+                  game_name = value;
+                });
+              },
+              controller: _inputController,
+            ),
+            actions: <Widget>[
+            DropdownButton(value: dropdownvalue,
+             icon:const Icon(Icons.keyboard_arrow_down),
+             items: items.map((String item){
+              return DropdownMenuItem(value: item,
+              child: Text(item),
+              );
+             }).toList(),
+             onChanged: (String? newValue){
               setState(() {
-                game_name = value;
+                dropdownvalue = newValue!;
               });
-            },
-            controller: _inputController,
-            decoration: 
-              const InputDecoration(hintText: "Type the game name"),
-          ),
-          actions: <Widget>[
+             },
+             ),
             ValueListenableBuilder<TextEditingValue>(
               valueListenable: _inputController,
-              builder: ((context, value, child) {
-                return ElevatedButton(
-                  key: const Key("Accept"),
-                  style: yesStyle,
-                  onPressed: value.text.isNotEmpty
-                  ?(){
-                setState(() {
-                  //_handleNewItem(valueText);
-                  Navigator.pop(context);
-                });
-              } : null,
-              child: const Text("Accept"),
+              builder: (context, value, child) {
+              return ElevatedButton(
+                key: const Key("OkButton"),
+                style: yesStyle,
+                onPressed: value.text.isNotEmpty
+                        ? () {
+                  setState(() {
+                    //_handleNewItem(valueText);
+                    Navigator.pop(context);
+                  });
+                } : null,
+                child: const Text('Accept'),
               );
               }
               ),
-            child: ElevatedButton(
-              key: const Key("Cancel"),
-              style: noStyle,
-              child: const Text("cancel"),
-              onPressed: (){
-                setState(() {
-                  Navigator.pop(context);
-                });
-              }
-            )
-          ),
-        ]
-        );
-     });
+              ElevatedButton(
+                    key: const Key("CancelButton"),
+                    style: noStyle,
+                    child: const Text("Cancel"),
+                    onPressed: () {
+                            setState(() {
+                              Navigator.pop(context);
+                            });
+                          }                  
+                  )
+                  ]
+          );
+        });
   }
   
 String game_name = "";
@@ -89,8 +108,7 @@ String game_name = "";
         onPressed: (() {
           _displayTextInputDialog(context);
         }),
-        child: const Icon(Icons.add),
-        
+        child: const Icon(Icons.add), 
       ),
     );
   }
