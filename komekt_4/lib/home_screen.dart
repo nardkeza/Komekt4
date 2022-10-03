@@ -67,13 +67,6 @@ class _HomeScreenState extends State<HomeScreen>{
   }
   
 String game_name = "";
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
-  }
-
-}
 
   // This widget is the root of your application.
   @override
@@ -83,11 +76,23 @@ String game_name = "";
         title: const Text('Komekt 4'),
         actions: [IconButton(onPressed: (() {}), icon: const Icon(Icons.person_add))],
         ),
-      body: ListView(),
+      body: ListView(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        children: const<Widget>[
+          Card(child:ListTile(title: Text("Test"))
+          ),
+          Card(child:ListTile(title:Text("Formatting Check"))
+          )
+        ]
+      ),
       floatingActionButton: FloatingActionButton(
-        onPressed: (() {}),
+        onPressed: (() {
+          _displayTextInputDialog(context);
+        }),
         child: const Icon(Icons.add),
+        
       ),
     );
   }
   
+}
