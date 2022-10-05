@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:komekt_4/alert_dialogs.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({super.key});
+  const HomeScreen({super.key});
   
 
-    @override
+  @override
   State<StatefulWidget> createState() =>_HomeScreenState();   
 }
 class _HomeScreenState extends State<HomeScreen>{
@@ -15,15 +15,15 @@ class _HomeScreenState extends State<HomeScreen>{
     super.initState();
   }
   
-  Future<void> _displayAlertDialog(BuildContext context, bool addFriend) async {
+  Future<void> _displayAlertDialog(BuildContext context, bool addFriend, [Map<String, String> friends = const <String, String> {}]) async {
     return showDialog(
         context: context,
         builder: (context) {
-          return CustomAlert(addFriend: addFriend);
+          return CustomAlert(addFriend: addFriend, friends: friends);
         });
   }
   
-  String game_name = "Testing";
+  String gameName = "Testing";
 
   // This widget is the root of your application.
   @override
@@ -36,15 +36,15 @@ class _HomeScreenState extends State<HomeScreen>{
       body: ListView(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         children: <Widget>[
-          Card(child:ListTile(title: Text(game_name), onTap: (){})
+          Card(child:ListTile(title: Text(gameName), onTap: (){})
           ),
-          Card(child:ListTile(title:Text("Formatting Check"), onTap: (){})
+          Card(child:ListTile(title: Text("Formatting Check"), onTap: (){})
           )
         ]
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (() {
-          _displayAlertDialog(context, false); // needs to be passed friends object
+          _displayAlertDialog(context, false, <String, String> {'Friend 1': 'ip 1', 'Friend 2': 'ip 2'}); // needs to be passed friends object
         }),
         child: const Icon(Icons.add), 
       ),

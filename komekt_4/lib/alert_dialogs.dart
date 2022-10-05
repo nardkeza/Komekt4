@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 class CustomAlert extends StatefulWidget {
-  const CustomAlert({super.key, required this.addFriend, this.friends});
+  const CustomAlert({super.key, required this.addFriend, required this.friends});
 
   final bool addFriend;
 
-  final Map<String, String>? friends; // type should be changed based on Friends implementation
+  final Map<String, String> friends; // type should be changed based on Friends implementation
 
   @override
   State<CustomAlert> createState() => _CustomAlertState();
@@ -59,10 +59,12 @@ class _CustomAlertState extends State<CustomAlert> {
               ),
             ])
             :
-            Column( children: [
+            Column( 
+              mainAxisSize: MainAxisSize.min,
+              children: [
               DropdownButtonFormField(
                 hint: const Text('Please select a friend...'),
-                items: widget.friends!.values.map((String friend) { // needs to be replaced with corresponding map for Friends inplementation.
+                items: widget.friends.keys.map((String friend) { // needs to be replaced with corresponding map for Friends inplementation.
                   return DropdownMenuItem(
                     value: friend,
                     child: Text(friend),
