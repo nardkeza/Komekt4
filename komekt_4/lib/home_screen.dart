@@ -1,7 +1,93 @@
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class HomeScreen extends StatefulWidget {
+  HomeScreen({super.key});
+  
+
+    @override
+  State<StatefulWidget> createState() =>_HomeScreenState();   
+}
+class _HomeScreenState extends State<HomeScreen>{
+  final TextEditingController _inputController = TextEditingController();
+  var items = ['Testing','Friend 2','Friend 1'];
+  late String dropdownvalue;
+
+  @override
+  void initState(){
+    super.initState();
+    dropdownvalue = 'Testing';
+  }
+  final ButtonStyle yesStyle = ElevatedButton.styleFrom(
+    textStyle: const TextStyle(fontSize:20),
+    primary: Colors.green
+  );
+  final ButtonStyle noStyle = ElevatedButton.styleFrom(
+    textStyle: const TextStyle(fontSize: 20),
+    primary:  Colors.red
+  );
+  
+    Future<void> _displayTextInputDialog(BuildContext context) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text("Put in the game name and choose which friend"),
+            content: TextField(
+              onChanged: (value) {
+                setState(() {
+                  game_name = value;
+                });
+              },
+              controller: _inputController,
+            ),
+            actions: <Widget>[
+            DropdownButton(
+             value: dropdownvalue,
+             icon:const Icon(Icons.keyboard_arrow_down),
+             items: items.map((String item){
+              return DropdownMenuItem(value: item,
+              child: Text(item),
+              );
+             }).toList(),
+              onChanged: (String? value) { 
+              setState(() {
+                dropdownvalue = value!;
+              });
+             },
+             ),
+            ValueListenableBuilder<TextEditingValue>(
+              valueListenable: _inputController,
+              builder: (context, value, child) {
+              return ElevatedButton(
+                key: const Key("OkButton"),
+                style: yesStyle,
+                onPressed: value.text.isNotEmpty
+                        ? () {
+                  setState(() {
+                    //_handleNewItem(valueText);
+                    Navigator.pop(context);
+                  });
+                } : null,
+                child: const Text('Accept'),
+              );
+              }
+              ),
+              ElevatedButton(
+                    key: const Key("CancelButton"),
+                    style: noStyle,
+                    child: const Text("Cancel"),
+                    onPressed: () {
+                            setState(() {
+                              Navigator.pop(context);
+                            });
+                          }                  
+                  )
+                  ]
+          );
+        });
+  }
+  
+String game_name = "Testing";
 
   // This widget is the root of your application.
   @override
@@ -11,11 +97,22 @@ class HomeScreen extends StatelessWidget {
         title: const Text('Komekt 4'),
         actions: [IconButton(onPressed: (() {}), icon: const Icon(Icons.person_add))],
         ),
-      body: ListView(),
+      body: ListView(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        children: <Widget>[
+          Card(child:ListTile(title: Text(game_name), onTap: (){})
+          ),
+          Card(child:ListTile(title:Text("Formatting Check"), onTap: (){})
+          )
+        ]
+      ),
       floatingActionButton: FloatingActionButton(
-        onPressed: (() {}),
-        child: const Icon(Icons.add),
+        onPressed: (() {
+          _displayTextInputDialog(context);
+        }),
+        child: const Icon(Icons.add), 
       ),
     );
   }
+  
 }
