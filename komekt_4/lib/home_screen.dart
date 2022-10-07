@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:komekt_4/game_screen.dart';
+import 'dart:async';
+import 'dart:io';
+import 'package:mutex/mutex.dart';
+
+  int ourPort = 8888;
+  final m = Mutex();
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({super.key});
@@ -26,6 +33,7 @@ class _HomeScreenState extends State<HomeScreen>{
     primary:  Colors.red
   );
   
+  
     Future<void> _displayTextInputDialog(BuildContext context) async {
     return showDialog(
         context: context,
@@ -45,7 +53,8 @@ class _HomeScreenState extends State<HomeScreen>{
              value: dropdownvalue,
              icon:const Icon(Icons.keyboard_arrow_down),
              items: items.map((String item){
-              return DropdownMenuItem(value: item,
+              return DropdownMenuItem(
+              value: item,
               child: Text(item),
               );
              }).toList(),
@@ -86,8 +95,25 @@ class _HomeScreenState extends State<HomeScreen>{
           );
         });
   }
+
+    Future<void> _setupServer() async {
+    try {
+      ServerSocket server =
+          await ServerSocket.bind(InternetAddress.anyIPv4, ourPort);
+      //server_sub = server.listen(_listenToSocket); // StreamSubscription<Socket>
+    } on SocketException catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Error: $e"),
+      ));
+    }
+  }
+  
   
 String game_name = "Testing";
+
+void _handleListClick(){
+
+}
 
   // This widget is the root of your application.
   @override
@@ -100,7 +126,9 @@ String game_name = "Testing";
       body: ListView(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         children: <Widget>[
-          Card(child:ListTile(title: Text(game_name), onTap: (){})
+          Card(child:ListTile(title: Text(game_name), onTap: (){
+            Navigator.of(context).push(MaterialPageRoute(builder: (context)=> GameScreen()));
+          })
           ),
           Card(child:ListTile(title:Text("Formatting Check"), onTap: (){})
           )

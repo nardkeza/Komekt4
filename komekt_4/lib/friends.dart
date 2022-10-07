@@ -1,5 +1,9 @@
-
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
+import 'package:mutex/mutex.dart';
+
+  int ourPort = 8888;
+  final m = Mutex();
 
 class Friends extends Iterable<String>{
   Map<String, Friend> _namesOfFriends= {};
@@ -28,7 +32,19 @@ class Friends extends Iterable<String>{
 class Friend extends ChangeNotifier{
   final String ipAddr;
   final String name;
+  // final List<string> _coordinates = [];
 
   Friend({required this.ipAddr, required this.name});
 
+    Future<void> _add_message(String message) async {
+    await m.protect(() async {
+      //_coordinates.add(coordinate: message);
+      notifyListeners();
+    });
+  }
+  Future<void> send(String coord) async {
+    Socket socket = await Socket.connect(ipAddr, ourPort);
+    socket.write(coord);
+    socket.close();
+  }
 }
