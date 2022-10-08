@@ -26,6 +26,7 @@ class _HomeScreenState extends State<HomeScreen>{
   late Friends _friends;
   late List<DropdownMenuItem<String>> _friendList;
   late StreamSubscription<Socket> server_sub;
+  late String game_name;
 
   @override
   void initState(){
@@ -35,6 +36,7 @@ class _HomeScreenState extends State<HomeScreen>{
     _nameController = TextEditingController();
     _inputController = TextEditingController();
     _ipController = TextEditingController();
+    game_name = "testing";
     _setupServer();
     _findIPAddress();
   }

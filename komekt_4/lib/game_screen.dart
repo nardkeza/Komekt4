@@ -4,12 +4,14 @@ import 'package:komekt_4/komekt_board.dart';
 class GameScreen extends StatelessWidget {
   GameScreen({super.key});
 
-  int row = 5;
-  int column = 5;
+  int row = 6;
+  int column = 7;
   String R = "red";
   String Y = "yellow";
 
-  var gridList = List.generate(5, (i) => 5, growable: false);
+
+  List<List<int>> gridList = List.generate(7, (i) => (List.generate(6, ((index) => 0), growable: false)));
+ 
 
   // This widget is the root of your application.
   @override
