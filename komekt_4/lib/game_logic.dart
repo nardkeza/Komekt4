@@ -2,7 +2,7 @@ import 'package:komekt_4/friends.dart';
 
 class GameLogic{
   
-  int player = -1;
+  int player = 1;
   List<List<int>> gridList = List.generate(7, (i) => List.generate(6,(index)=>0, growable: false));
   Friend friend;
 

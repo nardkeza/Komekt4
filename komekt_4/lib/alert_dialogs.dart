@@ -3,12 +3,14 @@ import 'package:komekt_4/friends.dart';
 import 'package:komekt_4/game_logic.dart';
 import 'package:komekt_4/game_screen.dart';
 
+typedef OnNewGameCallback = Function(GameLogic game);
+
 class CustomAlert extends StatefulWidget {
-  CustomAlert({super.key, required this.addFriend, required this.friends, required this.myIp});
+  CustomAlert({super.key, required this.addFriend, required this.friends, required this.myIp, required this.onNewGame});
 
   final bool addFriend;
   final String? myIp;
-
+  final OnNewGameCallback onNewGame;
   final Friends friends; // type should be changed based on Friends implementation
 
   @override
@@ -121,6 +123,7 @@ class _CustomAlertState extends State<CustomAlert> {
                 widget.friends.addNewFriend(_name,_ip);
               } else {
                 GameLogic newGame = GameLogic(friend: widget.friends.getFriend(_dropdownvalue)!);
+                widget.onNewGame(newGame);
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context)=> GameScreen(game: newGame)));

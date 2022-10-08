@@ -49,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen>{
     return showDialog(
         context: context,
         builder: (context) {
-          return CustomAlert(addFriend: addFriend, friends: _friends, myIp: _ipaddress,);
+          return CustomAlert(addFriend: addFriend, friends: _friends, myIp: _ipaddress, onNewGame: _passList);
         });
   }
 
@@ -98,6 +98,12 @@ void _handleListClick(GameLogic game){
    Navigator.of(context).push(MaterialPageRoute(
     builder: (context)=> GameScreen(game: game,)));
 
+}
+
+void _passList(GameLogic game){
+  setState(() {
+      gamelist.add(game);
+  });
 }
 
   // This widget is the root of your application.
