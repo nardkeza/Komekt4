@@ -1,7 +1,14 @@
+import 'package:komekt_4/friends.dart';
+
 class GameLogic{
   
   int player = -1;
   List<List<int>> gridList = List.generate(7, (i) => List.generate(6,(index)=>0, growable: false));
+  Friend friend;
+
+  GameLogic({required this.friend});
+
+  
 
   deepCopy(List<List<int>> org) { //Borrowed from code.reaper.12 on https://www.edureka.co/community/30218/deep-copying-a-2d-array-in-java
 
