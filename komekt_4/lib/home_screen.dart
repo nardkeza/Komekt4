@@ -29,6 +29,7 @@ class _HomeScreenState extends State<HomeScreen>{
   late String dropdownvalue;
   late Friends _friends;
   late StreamSubscription<Socket> server_sub;
+  late List<GameLogic> gamelist;
 
 
   @override
@@ -92,9 +93,9 @@ class _HomeScreenState extends State<HomeScreen>{
   
   String gameName = "Testing";
 
-void _handleListClick(){
+void _handleListClick(GameLogic game){
    Navigator.of(context).push(MaterialPageRoute(
-    builder: (context)=> GameScreen(game: GameLogic(),)));
+    builder: (context)=> GameScreen(game: game,)));
 
 }
 
@@ -108,14 +109,14 @@ void _handleListClick(){
         ),
       body: ListView(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
-        children: <Widget>[
-          Card(child:ListTile(title: Text(gameName), onTap: (){
-           _handleListClick();
+        children: gamelist.map((e) {
+          return Card(child:ListTile(title: Text(gameName), onTap: (){
+           _handleListClick(e);
           })
-          ),
-          Card(child:ListTile(title: Text("Formatting Check"), onTap: (){})
-          )
-        ]
+          );
+        },).toList()
+          
+        
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (() {
