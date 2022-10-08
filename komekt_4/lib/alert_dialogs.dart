@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komekt_4/friends.dart';
 
 class CustomAlert extends StatefulWidget {
   CustomAlert({super.key, required this.addFriend, required this.friends, required this.myIp});
@@ -6,7 +7,7 @@ class CustomAlert extends StatefulWidget {
   final bool addFriend;
   final String? myIp;
 
-  final Map<String, String> friends; // type should be changed based on Friends implementation
+  final Friends friends; // type should be changed based on Friends implementation
 
   @override
   State<CustomAlert> createState() => _CustomAlertState();
@@ -78,7 +79,7 @@ class _CustomAlertState extends State<CustomAlert> {
                   children: [
                   DropdownButtonFormField(
                     hint: const Text('Please select a friend...'),
-                    items: widget.friends.keys.map((String friend) { // needs to be replaced with corresponding map for Friends inplementation.
+                    items: widget.friends.toList().map((String friend) { // needs to be replaced with corresponding map for Friends inplementation.
                       return DropdownMenuItem(
                         value: friend,
                         child: Text(friend),
@@ -114,7 +115,7 @@ class _CustomAlertState extends State<CustomAlert> {
           onPressed: () {
             if (_formKey.currentState!.validate()) {
               if (widget.addFriend) {
-                // add friend to list
+                widget.friends.addNewFriend(_ip,_name);
               } else {
                 List<List<int>> gridList =
                 List.generate(7, (i) => (List.generate(6, ((index) => 0), growable: false)));
