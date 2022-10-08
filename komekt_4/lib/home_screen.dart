@@ -79,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen>{
 
 void _handleListClick(){
    Navigator.of(context).push(MaterialPageRoute(
-    builder: (context)=> GameScreen()));
+    builder: (context)=> GameScreen(game: GameLogic(),)));
 
 }
 
