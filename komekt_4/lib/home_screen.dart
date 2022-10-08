@@ -42,6 +42,7 @@ class _HomeScreenState extends State<HomeScreen>{
     _ipController = TextEditingController();
     _setupServer();
     _findIPAddress();
+    gamelist = [];
   }
   
   Future<void> _displayAlertDialog(BuildContext context, bool addFriend) async {
