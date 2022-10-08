@@ -60,6 +60,7 @@ class _GameScreenState extends State<GameScreen>{
                             setState(() {
                               if (widget.game.player == 1) {
                                 widget.game.gridList = widget.game.makeMove(index, 1, widget.game.deepCopy(widget.game.gridList));
+                                widget.game.friend.send(index.toString());
                                 if (widget.game.winner(widget.game.gridList) == 1) {
                                   widget.game.player = 0;
                                   widget.player_text = 'You won!';

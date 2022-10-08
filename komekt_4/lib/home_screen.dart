@@ -29,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen>{
   late String dropdownvalue;
   late Friends _friends;
   late StreamSubscription<Socket> server_sub;
-  late List<GameLogic> gamelist;
+  late Map<String, GameLogic> gamelist;
 
 
   @override
@@ -42,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen>{
     _ipController = TextEditingController();
     _setupServer();
     _findIPAddress();
-    gamelist = [];
+    gamelist = {};
   }
   
   Future<void> _displayAlertDialog(BuildContext context, bool addFriend) async {
@@ -74,16 +74,23 @@ class _HomeScreenState extends State<HomeScreen>{
     });
   }
 
-   void _handleIncomingMessage(String ip, Uint8List incomingData) {
+   void _handleIncomingMessage(String ip, Uint8List incomingData) async {
     String received = String.fromCharCodes(incomingData);
-    _friends.receiveMeg(ip, received);
+    await m.protect(() async {
+      if (gamelist.containsKey(ip)) {
+        if (gamelist[ip]!.player == -1) {
+          gamelist[ip]!.makeMove(int.parse(received), -1, gamelist[ip]!.deepCopy(gamelist[ip]!.gridList));
+        }
+    }
+    });
+    
   }
 
     Future<void> _setupServer() async {
     try {
       ServerSocket server =
           await ServerSocket.bind(InternetAddress.anyIPv4, ourPort);
-      //server_sub = server.listen(_listenToSocket); // StreamSubscription<Socket>
+      server_sub = server.listen(_listenToSocket); // StreamSubscription<Socket>
     } on SocketException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("Error: $e"),
@@ -100,9 +107,9 @@ void _handleListClick(GameLogic game){
 
 }
 
-void _passList(GameLogic game){
+void _passList(String ip, GameLogic game){
   setState(() {
-      gamelist.add(game);
+      gamelist.addAll({ip: game});
   });
 }
 
@@ -116,7 +123,7 @@ void _passList(GameLogic game){
         ),
       body: ListView(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
-        children: gamelist.map((e) {
+        children: gamelist.values.map((e) {
           return Card(child:ListTile(title: Text(gameName), onTap: (){
            _handleListClick(e);
           })
