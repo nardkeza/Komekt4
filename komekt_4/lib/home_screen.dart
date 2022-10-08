@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:komekt_4/gameLogic.dart';
+import 'package:komekt_4/game_logic.dart';
 
 import 'package:komekt_4/game_screen.dart';
 import 'dart:async';

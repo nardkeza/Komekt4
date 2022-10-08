@@ -1,21 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:komekt_4/game_logic.dart';
 import 'package:komekt_4/komekt_board.dart';
 
 class GameScreen extends StatelessWidget {
-  GameScreen({super.key});
+  const GameScreen({super.key, required this.game});
 
-  int row = 6;
-  int column = 7;
-  String R = "red";
-  String Y = "yellow";
- 
+  final GameLogic game;
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    const int _rows = 6;
-    const int _columns = 7;
-    double _buttonSize = MediaQuery.of(context).size.width * 0.1;
 
     return Scaffold(
       appBar: AppBar(title: const Text('Game Name Placeholder'),),
@@ -29,8 +23,8 @@ class GameScreen extends StatelessWidget {
             child: const AspectRatio(
               aspectRatio: 7/6,
               child: Komekt4Board(
-                rows: _rows,
-                columns: _columns,
+                rows: 6,
+                columns: 7,
               ),
             ),
           ),
@@ -51,7 +45,7 @@ class GameScreen extends StatelessWidget {
           IconButton(iconSize: MediaQuery.of(context).size.width * 0.1, onPressed: (() {Navigator.pop(context);}), icon: const Icon(Icons.close)),
 
           const Spacer(),
-          IconButton(iconSize: _buttonSize, onPressed: (() {}), icon: const Icon(Icons.done)),
+          IconButton(iconSize: MediaQuery.of(context).size.width * 0.1, onPressed: (() {}), icon: const Icon(Icons.done)),
           ]),
       ]),
     );
