@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:komekt_4/friends.dart';
+import 'package:komekt_4/gameLogic.dart';
+import 'package:komekt_4/game_screen.dart';
 
 class CustomAlert extends StatefulWidget {
   CustomAlert({super.key, required this.addFriend, required this.friends, required this.myIp});
