@@ -3,26 +3,37 @@ import 'package:komekt_4/game_screen.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:mutex/mutex.dart';
+import 'package:komekt_4/friends.dart';
+import 'package:network_info_plus/network_info_plus.dart';
 
   int ourPort = 8888;
   final m = Mutex();
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({super.key});
+  const HomeScreen({super.key});
   
-
     @override
   State<StatefulWidget> createState() =>_HomeScreenState();   
 }
 class _HomeScreenState extends State<HomeScreen>{
-  final TextEditingController _inputController = TextEditingController();
+  String? _ipaddress = "Loading...";
+  late TextEditingController _inputController, _nameController,_ipController;
   var items = ['Testing','Friend 2','Friend 1'];
   late String dropdownvalue;
+  late Friends _friends;
+  late List<DropdownMenuItem<String>> _friendList;
+  late StreamSubscription<Socket> server_sub;
 
   @override
   void initState(){
     super.initState();
-    dropdownvalue = 'Testing';
+    _friends = Friends();
+    _friends.add("Self", "127.0.0.1");
+    _nameController = TextEditingController();
+    _inputController = TextEditingController();
+    _ipController = TextEditingController();
+    _setupServer();
+    _findIPAddress();
   }
   final ButtonStyle yesStyle = ElevatedButton.styleFrom(
     textStyle: const TextStyle(fontSize:20),
@@ -32,7 +43,6 @@ class _HomeScreenState extends State<HomeScreen>{
     textStyle: const TextStyle(fontSize: 20),
     primary:  Colors.red
   );
-  
   
     Future<void> _displayTextInputDialog(BuildContext context) async {
     return showDialog(
@@ -96,6 +106,20 @@ class _HomeScreenState extends State<HomeScreen>{
         });
   }
 
+    void addNew() {
+    setState(() {
+      _friends.add(_nameController.text, _ipController.text);
+    });
+  }
+
+  Future<void> _findIPAddress() async {
+    // Thank you https://stackoverflow.com/questions/52411168/how-to-get-device-ip-in-dart-flutter
+    String? ip = await NetworkInfo().getWifiIP();
+    setState(() {
+      _ipaddress = "My IP: " + ip!;
+    });
+  }
+
     Future<void> _setupServer() async {
     try {
       ServerSocket server =
@@ -112,6 +136,8 @@ class _HomeScreenState extends State<HomeScreen>{
 String game_name = "Testing";
 
 void _handleListClick(){
+   Navigator.of(context).push(MaterialPageRoute(
+    builder: (context)=> GameScreen()));
 
 }
 
@@ -127,7 +153,7 @@ void _handleListClick(){
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         children: <Widget>[
           Card(child:ListTile(title: Text(game_name), onTap: (){
-            Navigator.of(context).push(MaterialPageRoute(builder: (context)=> GameScreen()));
+           _handleListClick();
           })
           ),
           Card(child:ListTile(title:Text("Formatting Check"), onTap: (){})

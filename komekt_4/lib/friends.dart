@@ -32,13 +32,13 @@ class Friends extends Iterable<String>{
 class Friend extends ChangeNotifier{
   final String ipAddr;
   final String name;
-  // final List<string> _coordinates = [];
+  final List<String> _coordinates = [];
 
   Friend({required this.ipAddr, required this.name});
 
     Future<void> _add_message(String message) async {
     await m.protect(() async {
-      //_coordinates.add(coordinate: message);
+      //_coordinates.add(Coordinate(content: message));
       notifyListeners();
     });
   }
@@ -47,4 +47,9 @@ class Friend extends ChangeNotifier{
     socket.write(coord);
     socket.close();
   }
+}
+class Coordinate{
+  final String content;
+
+  const Coordinate({required this.content});
 }
