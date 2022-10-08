@@ -42,11 +42,11 @@ class _HomeScreenState extends State<HomeScreen>{
     _findIPAddress();
   }
   
-  Future<void> _displayAlertDialog(BuildContext context, bool addFriend, [Map<String, String> friends = const <String, String> {}]) async {
+  Future<void> _displayAlertDialog(BuildContext context, bool addFriend) async {
     return showDialog(
         context: context,
         builder: (context) {
-          return CustomAlert(addFriend: addFriend, friends: friends, myIp: _ipaddress,);
+          return CustomAlert(addFriend: addFriend, friends: _friends, myIp: _ipaddress,);
         });
   }
 
@@ -106,7 +106,7 @@ void _handleListClick(){
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (() {
-          _displayAlertDialog(context, false, <String, String> {'Friend 1': 'ip 1', 'Friend 2': 'ip 2'}); // needs to be passed friends object
+          _displayAlertDialog(context, false); // needs to be passed friends object
         }),
         child: const Icon(Icons.add), 
       ),

@@ -33,7 +33,7 @@ class GameScreen extends StatelessWidget {
 
         
         Row(children: [
-          IconButton(iconSize: MediaQuery.of(context).size.width * 0.1, onPressed: (() {}), icon: const Icon(Icons.close)),
+          IconButton(iconSize: MediaQuery.of(context).size.width * 0.1, onPressed: (() {Navigator.pop(context);}), icon: const Icon(Icons.close)),
           const Spacer(),
           IconButton(iconSize: MediaQuery.of(context).size.width * 0.1, onPressed: (() {}), icon: const Icon(Icons.done)),
           ]),

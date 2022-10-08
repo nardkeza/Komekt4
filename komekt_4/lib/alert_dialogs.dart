@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komekt_4/friends.dart';
 import 'package:komekt_4/gameLogic.dart';
 import 'package:komekt_4/game_screen.dart';
 
@@ -8,7 +9,7 @@ class CustomAlert extends StatefulWidget {
   final bool addFriend;
   final String? myIp;
 
-  final Map<String, String> friends; // type should be changed based on Friends implementation
+  final Friends friends; // type should be changed based on Friends implementation
 
   @override
   State<CustomAlert> createState() => _CustomAlertState();
@@ -80,7 +81,7 @@ class _CustomAlertState extends State<CustomAlert> {
                   children: [
                   DropdownButtonFormField(
                     hint: const Text('Please select a friend...'),
-                    items: widget.friends.keys.map((String friend) { // needs to be replaced with corresponding map for Friends inplementation.
+                    items: widget.friends.toList().map((String friend) { // needs to be replaced with corresponding map for Friends inplementation.
                       return DropdownMenuItem(
                         value: friend,
                         child: Text(friend),
