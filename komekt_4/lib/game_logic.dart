@@ -1,4 +1,4 @@
-class gameLogic{
+class GameLogic{
   int player = -1;
 
     // Constructor
