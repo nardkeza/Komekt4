@@ -16,28 +16,12 @@ class GameScreen extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    const int _rows = 6;
-    const int _columns = 7;
-    double _buttonSize = MediaQuery.of(context).size.width * 0.1;
 
     return Scaffold(
       appBar: AppBar(title: const Text('Game Name Placeholder'),),
       body: Column(children: [
         Expanded(flex: 2, child: Container(color: Theme.of(context).backgroundColor)),
-        Center(
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              border: Border.all(width: 1.0, color: Colors.black38),
-            ),
-            child: const AspectRatio(
-              aspectRatio: 7/6,
-              child: Komekt4Board(
-                rows: _rows,
-                columns: _columns,
-              ),
-            ),
-          ),
-        ),
+        const Komekt4Game(),
         Expanded(flex: 5, child:
           Container(
             width: MediaQuery.of(context).size.width,
@@ -51,9 +35,9 @@ class GameScreen extends StatelessWidget {
 
         
         Row(children: [
-          IconButton(iconSize: _buttonSize, onPressed: (() {}), icon: const Icon(Icons.close)),
+          IconButton(iconSize: MediaQuery.of(context).size.width * 0.1, onPressed: (() {}), icon: const Icon(Icons.close)),
           const Spacer(),
-          IconButton(iconSize: _buttonSize, onPressed: (() {}), icon: const Icon(Icons.done)),
+          IconButton(iconSize: MediaQuery.of(context).size.width * 0.1, onPressed: (() {}), icon: const Icon(Icons.done)),
           ]),
       ]),
     );
