@@ -95,7 +95,7 @@ void _handleListClick(){
       body: ListView(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         children: <Widget>[
-          Card(child:ListTile(title: Text(game_name), onTap: (){
+          Card(child:ListTile(title: Text(gameName), onTap: (){
            _handleListClick();
           })
           ),

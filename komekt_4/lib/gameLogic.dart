@@ -1,41 +1,42 @@
 class gameLogic{
-     int player = -1;
+  int player = -1;
 
     // Constructor
-    Connect4() {
-      List.generate(7, (i) => (List.generate(6, ((index) => 0), growable: false)));
+  Connect4() {
+    List<List<int>> gridList = List.generate(7, (i) => List.generate(6,(index)=>0, growable: false));
+   
     }
 
-    deepCopy(List<List<int>> org) {
+
+  deepCopy(List<List<int>> org) { //Borrowed from code.reaper.12 on https://www.edureka.co/community/30218/deep-copying-a-2d-array-in-java
 
         if (org == null) {
             return null;
         }
 
-        final List<List<int>> res =
-         List.generate(7, (i) => org[i]);
+        final List<List<int>> res = List.generate(7, (i) => List.generate(6,(index)=>0, growable: false));
         return res;
     }
 
-
-   List<List<int>> makeMove(int x, int movingPlayer, List<List<int>> state) {
-      List<List<int>> newState = deepCopy(state);
+    List<List<int>> makeMove(int x, int movingPlayer, List<List<int>> state) {
+        List<List<int>> newstate = deepCopy(state);
         if (getValidMoves(state).contains(x)) {
             for (int i = 0; i < 4; i++) {
-                if (newState[x][i] == 0){
-                    newState[x][i] = movingPlayer;
+                if (newstate[x][i] == 0){
+                    newstate[x][i] = movingPlayer;
                     break;
                 }
             }
-            return newState;
+            return newstate;
         } else {
             return deepCopy(state);
         }
 
 
     }
-   List<int> getValidMoves(List<List<int>> state) {
-        List<int> moves = [];
+
+    List<int> getValidMoves(List<List<int>>  state) {
+        List<int>  moves = [];
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 4; j++) {
                 if (state[i][j] == 0) {
@@ -47,7 +48,7 @@ class gameLogic{
         return moves;
     }
 
-    int winner(List<List<int>> state) {
+     int winner(List<List<int>>  state) {
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 4; j++) {
                 if (state[i][j] == 0) {
@@ -57,28 +58,28 @@ class gameLogic{
                     if (state[i][j] == state[i+1][j] &&
                             state[i][j] == state[i+2][j] &&
                             state[i][j] == state[i+3][j]){
-                        return state[i][j];
+                        return state[i][j] * player * -1;
                     }
                 }
                 if (i<2 && j<1) {
                     if (state[i][j] == state[i+1][j+1] &&
                             state[i][j] == state[i+2][j+2] &&
                             state[i][j] == state[i+3][j+3]){
-                        return state[i][j];
+                        return state[i][j] * player * -1;
                     }
                 }
                 if (i<2 && j>2) {
                     if (state[i][j] == state[i+1][j-1] &&
                             state[i][j] == state[i+2][j-2] &&
                             state[i][j] == state[i+3][j-3]){
-                        return state[i][j];
+                        return state[i][j] * player * -1;
                     }
                 }
                 if (j<1){
                     if (state[i][j] == state[i][j+1] &&
                             state[i][j] == state[i][j+2] &&
                             state[i][j] == state[i][j+3]){
-                        return state[i][j];
+                        return state[i][j] * player * -1;
                     }
                 }
             }
@@ -89,4 +90,3 @@ class gameLogic{
         return 0;
     }
 }
-

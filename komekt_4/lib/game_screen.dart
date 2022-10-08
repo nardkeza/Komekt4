@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:komekt_4/komekt_board.dart';
+import 'package:komekt_4/gameLogic.dart';
 
 class GameScreen extends StatelessWidget {
-  GameScreen({super.key});
-
+  GameScreen({super.key, required this.game});
+  gameLogic game;
   int row = 6;
   int column = 7;
   String R = "red";
   String Y = "yellow";
 
-
-  List<List<int>> gridList = List.generate(7, (i) => (List.generate(6, ((index) => 0), growable: false)));
- 
 
   // This widget is the root of your application.
   @override
