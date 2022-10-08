@@ -1,3 +1,6 @@
+
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:komekt_4/gameLogic.dart';
 
@@ -60,6 +63,18 @@ class _HomeScreenState extends State<HomeScreen>{
     setState(() {
       _ipaddress = "My IP: " + ip!;
     });
+  }
+    void _listenToSocket(Socket socket) {
+    socket.listen((data) {
+      setState(() {
+        _handleIncomingMessage(socket.remoteAddress.address, data);
+      });
+    });
+  }
+
+   void _handleIncomingMessage(String ip, Uint8List incomingData) {
+    String received = String.fromCharCodes(incomingData);
+    _friends.receiveMeg(ip, received);
   }
 
     Future<void> _setupServer() async {
