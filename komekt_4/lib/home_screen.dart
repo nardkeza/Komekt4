@@ -83,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen>{
     try {
       ServerSocket server =
           await ServerSocket.bind(InternetAddress.anyIPv4, ourPort);
-      //server_sub = server.listen(_listenToSocket); // StreamSubscription<Socket>
+      server_sub = server.listen(_listenToSocket); // StreamSubscription<Socket>
     } on SocketException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("Error: $e"),
