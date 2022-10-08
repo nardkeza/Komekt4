@@ -3,9 +3,10 @@ import 'package:komekt_4/gameLogic.dart';
 import 'package:komekt_4/game_screen.dart';
 
 class CustomAlert extends StatefulWidget {
-  const CustomAlert({super.key, required this.addFriend, required this.friends});
+  CustomAlert({super.key, required this.addFriend, required this.friends, required this.myIp});
 
   final bool addFriend;
+  final String? myIp;
 
   final Map<String, String> friends; // type should be changed based on Friends implementation
 
@@ -17,84 +18,99 @@ class _CustomAlertState extends State<CustomAlert> {
 
   final _formKey = GlobalKey<FormState>();
   String _name = '';
+  
   String _ip = '';
   
   late String _dropdownvalue;
 
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Item To Add'),
+      title: (widget.addFriend)
+      ?
+      const Text('Add a Friend')
+      :
+      const Text('Add a Game'),
       content:
-        Form(
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          key: _formKey,
-          child:
-            (widget.addFriend)
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            (widget.myIp != null)
             ?
-            Column( 
-              mainAxisSize: MainAxisSize.min,
-              children: [
-              TextFormField(
-                
-                decoration: const InputDecoration(
-                  labelText: 'Enter name...',
-                ),
-                onChanged: (text) => setState(() => _name = text),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a name';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Enter IP address...',
-                ),
-                onChanged: (text) => setState(() => _ip = text),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter an IP address';
-                  }
-                  return null;
-                },
-              ),
-            ])
+            Text(widget.myIp!)
             :
-            Column( 
-              mainAxisSize: MainAxisSize.min,
-              children: [
-              DropdownButtonFormField(
-                hint: const Text('Please select a friend...'),
-                items: widget.friends.keys.map((String friend) { // needs to be replaced with corresponding map for Friends inplementation.
-                  return DropdownMenuItem(
-                    value: friend,
-                    child: Text(friend),
-                  );
-                }).toList(),
-                onChanged: (value) => setState(() => _dropdownvalue = value!),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please select a friend';
-                  }
-                  return null;
-                },
-                
+            const Text('No IP found'),
+            Form(
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              key: _formKey,
+              child:
+                (widget.addFriend)
+                ?
+                Column( 
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                  TextFormField(
+                    
+                    decoration: const InputDecoration(
+                      labelText: 'Enter name...',
+                    ),
+                    onChanged: (text) => setState(() => _name = text),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a name';
+                      }
+                      return null;
+                    },
+                  ),
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      labelText: 'Enter IP address...',
+                    ),
+                    onChanged: (text) => setState(() => _ip = text),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter an IP address';
+                      }
+                      return null;
+                    },
+                  ),
+                ])
+                :
+                Column( 
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                  DropdownButtonFormField(
+                    hint: const Text('Please select a friend...'),
+                    items: widget.friends.keys.map((String friend) { // needs to be replaced with corresponding map for Friends inplementation.
+                      return DropdownMenuItem(
+                        value: friend,
+                        child: Text(friend),
+                      );
+                    }).toList(),
+                    onChanged: (value) => setState(() => _dropdownvalue = value!),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please select a friend';
+                      }
+                      return null;
+                    },
+                    
+                  ),
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      labelText: 'Enter game name...',
+                    ),
+                    onChanged: (text) => setState(() => _name = text),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a game name';
+                      }
+                      return null;
+                    },
+                  ),
+                ])
               ),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Enter game name...',
-                ),
-                onChanged: (text) => setState(() => _name = text),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a game name';
-                  }
-                  return null;
-                },
-              ),
-            ])
-          ),
+          ],
+        ),
       actions: <Widget>[
         ElevatedButton(
           onPressed: () {
