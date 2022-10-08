@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+
 import 'package:komekt_4/game_screen.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:mutex/mutex.dart';
 import 'package:komekt_4/friends.dart';
 import 'package:network_info_plus/network_info_plus.dart';
+import 'package:komekt_4/alert_dialogs.dart';
 
   int ourPort = 8888;
   final m = Mutex();
+
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -35,74 +38,12 @@ class _HomeScreenState extends State<HomeScreen>{
     _setupServer();
     _findIPAddress();
   }
-  final ButtonStyle yesStyle = ElevatedButton.styleFrom(
-    textStyle: const TextStyle(fontSize:20),
-    primary: Colors.green
-  );
-  final ButtonStyle noStyle = ElevatedButton.styleFrom(
-    textStyle: const TextStyle(fontSize: 20),
-    primary:  Colors.red
-  );
   
-    Future<void> _displayTextInputDialog(BuildContext context) async {
+  Future<void> _displayAlertDialog(BuildContext context, bool addFriend, [Map<String, String> friends = const <String, String> {}]) async {
     return showDialog(
         context: context,
         builder: (context) {
-          return AlertDialog(
-            title: const Text("Put in the game name and choose which friend"),
-            content: TextField(
-              onChanged: (value) {
-                setState(() {
-                  game_name = value;
-                });
-              },
-              controller: _inputController,
-            ),
-            actions: <Widget>[
-            DropdownButton(
-             value: dropdownvalue,
-             icon:const Icon(Icons.keyboard_arrow_down),
-             items: items.map((String item){
-              return DropdownMenuItem(
-              value: item,
-              child: Text(item),
-              );
-             }).toList(),
-              onChanged: (String? value) { 
-              setState(() {
-                dropdownvalue = value!;
-              });
-             },
-             ),
-            ValueListenableBuilder<TextEditingValue>(
-              valueListenable: _inputController,
-              builder: (context, value, child) {
-              return ElevatedButton(
-                key: const Key("OkButton"),
-                style: yesStyle,
-                onPressed: value.text.isNotEmpty
-                        ? () {
-                  setState(() {
-                    //_handleNewItem(valueText);
-                    Navigator.pop(context);
-                  });
-                } : null,
-                child: const Text('Accept'),
-              );
-              }
-              ),
-              ElevatedButton(
-                    key: const Key("CancelButton"),
-                    style: noStyle,
-                    child: const Text("Cancel"),
-                    onPressed: () {
-                            setState(() {
-                              Navigator.pop(context);
-                            });
-                          }                  
-                  )
-                  ]
-          );
+          return CustomAlert(addFriend: addFriend, friends: friends);
         });
   }
 
@@ -133,7 +74,7 @@ class _HomeScreenState extends State<HomeScreen>{
   }
   
   
-String game_name = "Testing";
+  String gameName = "Testing";
 
 void _handleListClick(){
    Navigator.of(context).push(MaterialPageRoute(
@@ -147,7 +88,7 @@ void _handleListClick(){
     return Scaffold(
       appBar: AppBar(
         title: const Text('Komekt 4'),
-        actions: [IconButton(onPressed: (() {}), icon: const Icon(Icons.person_add))],
+        actions: [IconButton(onPressed: (() {_displayAlertDialog(context, true);}), icon: const Icon(Icons.person_add))],
         ),
       body: ListView(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -156,13 +97,13 @@ void _handleListClick(){
            _handleListClick();
           })
           ),
-          Card(child:ListTile(title:Text("Formatting Check"), onTap: (){})
+          Card(child:ListTile(title: Text("Formatting Check"), onTap: (){})
           )
         ]
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (() {
-          _displayTextInputDialog(context);
+          _displayAlertDialog(context, false, <String, String> {'Friend 1': 'ip 1', 'Friend 2': 'ip 2'}); // needs to be passed friends object
         }),
         child: const Icon(Icons.add), 
       ),
