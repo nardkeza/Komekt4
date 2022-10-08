@@ -25,9 +25,8 @@ class _HomeScreenState extends State<HomeScreen>{
   var items = ['Testing','Friend 2','Friend 1'];
   late String dropdownvalue;
   late Friends _friends;
-  late List<DropdownMenuItem<String>> _friendList;
   late StreamSubscription<Socket> server_sub;
-  late String game_name;
+
 
   @override
   void initState(){
@@ -37,16 +36,15 @@ class _HomeScreenState extends State<HomeScreen>{
     _nameController = TextEditingController();
     _inputController = TextEditingController();
     _ipController = TextEditingController();
-    game_name = "testing";
     _setupServer();
     _findIPAddress();
   }
   
-  Future<void> _displayAlertDialog(BuildContext context, bool addFriend, [Map<String, String> friends = const <String, String> {}]) async {
+  Future<void> _displayAlertDialog(BuildContext context, bool addFriend) async {
     return showDialog(
         context: context,
         builder: (context) {
-          return CustomAlert(addFriend: addFriend, friends: friends, myIp: _ipaddress,);
+          return CustomAlert(addFriend: addFriend, friends: _friends, myIp: _ipaddress,);
         });
   }
 
@@ -81,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen>{
 
 void _handleListClick(){
    Navigator.of(context).push(MaterialPageRoute(
-    builder: (context)=> GameScreen(game: gameLogic(),)));
+    builder: (context)=> GameScreen()));
 
 }
 
@@ -106,7 +104,7 @@ void _handleListClick(){
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (() {
-          _displayAlertDialog(context, false, <String, String> {'Friend 1': 'ip 1', 'Friend 2': 'ip 2'}); // needs to be passed friends object
+          _displayAlertDialog(context, false); // needs to be passed friends object
         }),
         child: const Icon(Icons.add), 
       ),

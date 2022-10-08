@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:komekt_4/gameLogic.dart';
-import 'package:komekt_4/game_screen.dart';
 
 class CustomAlert extends StatefulWidget {
   CustomAlert({super.key, required this.addFriend, required this.friends, required this.myIp});
@@ -118,9 +116,9 @@ class _CustomAlertState extends State<CustomAlert> {
               if (widget.addFriend) {
                 // add friend to list
               } else {
-                gameLogic newGame = gameLogic();
-                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context)=> GameScreen(game:newGame)));
+                List<List<int>> gridList =
+                List.generate(7, (i) => (List.generate(6, ((index) => 0), growable: false)));
+                // create new game
                 // navigate to game screen
               }
             }
