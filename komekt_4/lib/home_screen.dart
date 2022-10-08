@@ -25,9 +25,8 @@ class _HomeScreenState extends State<HomeScreen>{
   var items = ['Testing','Friend 2','Friend 1'];
   late String dropdownvalue;
   late Friends _friends;
-  late List<DropdownMenuItem<String>> _friendList;
   late StreamSubscription<Socket> server_sub;
-  late String game_name;
+
 
   @override
   void initState(){
@@ -37,7 +36,6 @@ class _HomeScreenState extends State<HomeScreen>{
     _nameController = TextEditingController();
     _inputController = TextEditingController();
     _ipController = TextEditingController();
-    game_name = "testing";
     _setupServer();
     _findIPAddress();
   }
@@ -81,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen>{
 
 void _handleListClick(){
    Navigator.of(context).push(MaterialPageRoute(
-    builder: (context)=> GameScreen(game: gameLogic(),)));
+    builder: (context)=> GameScreen()));
 
 }
 

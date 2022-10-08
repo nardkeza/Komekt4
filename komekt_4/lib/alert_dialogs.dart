@@ -117,11 +117,11 @@ class _CustomAlertState extends State<CustomAlert> {
           onPressed: () {
             if (_formKey.currentState!.validate()) {
               if (widget.addFriend) {
-                // add friend to list
+                widget.friends.addNewFriend(_ip,_name);
               } else {
-                gameLogic newGame = gameLogic();
-                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context)=> GameScreen(game:newGame)));
+                List<List<int>> gridList =
+                List.generate(7, (i) => (List.generate(6, ((index) => 0), growable: false)));
+                // create new game
                 // navigate to game screen
               }
             }

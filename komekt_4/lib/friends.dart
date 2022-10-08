@@ -12,12 +12,12 @@ class Friends extends Iterable<String>{
   void add(String name, String ip){
     Friend nf = Friend(ipAddr: ip, name: name);
     _namesOfFriends[name] = nf;
-    _ipsOfFriends[name] = nf;
+    _ipsOfFriends[ip] = nf;
   }
 
-  void addNewFriend(String ip){
+  void addNewFriend(String ip, String name){
     if(!_ipsOfFriends.containsKey(ip)){
-      String newFriend = "Friend${_ipsOfFriends.length}";
+      String newFriend = name;
       add(newFriend, ip);
     }
   }
