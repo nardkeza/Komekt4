@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:komekt_4/gameLogic.dart';
 
 import 'package:komekt_4/game_screen.dart';
 import 'dart:async';
@@ -45,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen>{
     return showDialog(
         context: context,
         builder: (context) {
-          return CustomAlert(addFriend: addFriend, friends: friends);
+          return CustomAlert(addFriend: addFriend, friends: friends, myIp: _ipaddress,);
         });
   }
 
@@ -80,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen>{
 
 void _handleListClick(){
    Navigator.of(context).push(MaterialPageRoute(
-    builder: (context)=> GameScreen()));
+    builder: (context)=> GameScreen(game: gameLogic(),)));
 
 }
 
