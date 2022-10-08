@@ -119,7 +119,10 @@ class _CustomAlertState extends State<CustomAlert> {
               if (widget.addFriend) {
                 widget.friends.addNewFriend(_ip,_name);
               } else {
-                
+                GameLogic newGame = GameLogic();
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context)=> GameScreen(game: newGame)));
                 // create new game
                 // navigate to game screen
               }
