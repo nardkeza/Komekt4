@@ -81,7 +81,8 @@ class _CustomAlertState extends State<CustomAlert> {
                   children: [
                   DropdownButtonFormField(
                     hint: const Text('Please select a friend...'),
-                    items: widget.friends.toList().map((String friend) { // needs to be replaced with corresponding map for Friends inplementation.
+                    items: widget.friends.toList().map((String friend) {
+                      _dropdownvalue = friend;        // needs to be replaced with corresponding map for Friends inplementation.
                       return DropdownMenuItem(
                         value: friend,
                         child: Text(friend),
@@ -117,9 +118,9 @@ class _CustomAlertState extends State<CustomAlert> {
           onPressed: () {
             if (_formKey.currentState!.validate()) {
               if (widget.addFriend) {
-                widget.friends.addNewFriend(_ip,_name);
+                widget.friends.addNewFriend(_name,_ip);
               } else {
-                GameLogic newGame = GameLogic();
+                GameLogic newGame = GameLogic(friend: widget.friends.getFriend(_dropdownvalue)!);
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context)=> GameScreen(game: newGame)));
