@@ -79,7 +79,9 @@ class _HomeScreenState extends State<HomeScreen>{
     if (gamelist.containsKey(ip)) {
       setState(() {
         if (gamelist[ip]!.player == -1) {
-          gamelist[ip]!.makeMove(int.parse(received), -1, gamelist[ip]!.deepCopy(gamelist[ip]!.gridList));
+          gamelist[ip]!.gridList = gamelist[ip]!.makeMove(int.parse(received), -1, gamelist[ip]!.deepCopy(gamelist[ip]!.gridList));
+          gamelist[ip]!.gridList = gamelist[ip]!.finalizeMove();
+          gamelist[ip]!.player = 1;
         }
       });
       
@@ -89,6 +91,7 @@ class _HomeScreenState extends State<HomeScreen>{
         gamelist[ip]!.player = -1;
         if (gamelist[ip]!.player == -1) {
           gamelist[ip]!.gridList = gamelist[ip]!.makeMove(int.parse(received), -1, gamelist[ip]!.deepCopy(gamelist[ip]!.gridList));
+          gamelist[ip]!.gridList = gamelist[ip]!.finalizeMove();
           gamelist[ip]!.player = 1;
         }
       });
@@ -117,7 +120,7 @@ void _handleListClick(GameLogic game){
 
 bool _passList(String ip, GameLogic game){
   setState(() {
-    if (gamelist.keys.contains(ip)) {
+    if (!gamelist.keys.contains(ip)) {
       gamelist.addAll({ip: game});
     }
   });

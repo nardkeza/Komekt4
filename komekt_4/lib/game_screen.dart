@@ -61,6 +61,7 @@ class _GameScreenState extends State<GameScreen>{
                               }
                             });
                           },
+                          behavior: HitTestBehavior.translucent,
                         ),
                       );
                     }),
