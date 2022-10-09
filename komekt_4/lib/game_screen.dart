@@ -20,7 +20,7 @@ class _GameScreenState extends State<GameScreen>{
 
     return Scaffold(
       appBar: AppBar(title: Text(widget.game.gameName),),
-      body: Column(children: [
+      body: Column(children: [ // https://stackoverflow.com/questions/56410074/how-to-set-the-background-color-of-a-row-in-flutter
         Expanded(flex: 2, child: Container(color: Theme.of(context).backgroundColor)),
         Center(
           child: AspectRatio(
@@ -53,7 +53,7 @@ class _GameScreenState extends State<GameScreen>{
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: List.generate(widget.game.gridList.length, (index) {
                       return Flexible(
-                        child: GestureDetector(
+                        child: GestureDetector( // https://stackoverflow.com/questions/61277259/gesturedetector-not-detecting-inside-of-list-generate
                           onTap: () {
                             setState(() {
                               if (widget.game.player == 1) {
