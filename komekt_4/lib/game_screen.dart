@@ -78,7 +78,8 @@ class _GameScreenState extends State<GameScreen>{
             child: Column(children: [
               const Spacer(flex: 2),
               Flexible(flex: 4, child: Text(
-                (widget.game.winner(widget.game.gridList) == 1)?
+                (widget.game.winner(widget.game.gridList) == 1)
+                ?
                 'You Won!'
                 :
                 (widget.game.winner(widget.game.gridList) == -1)
@@ -98,23 +99,28 @@ class _GameScreenState extends State<GameScreen>{
 
         
         Row(children: [
-          IconButton(iconSize: MediaQuery.of(context).size.width * 0.1, onPressed: (() {Navigator.pop(context);}), icon: const Icon(Icons.close)),
+          IconButton(iconSize: MediaQuery.of(context).size.width * 0.1, onPressed: (() {setState(() {
+            Navigator.pop(context);
+          });
+          }), icon: const Icon(Icons.close)),
 
           const Spacer(),
           IconButton(iconSize: MediaQuery.of(context).size.width * 0.1, onPressed: (() {
-            if (widget.game.tempMove != null) {
-              int move = widget.game.tempMove![0];
-              widget.game.gridList = widget.game.finalizeMove();
-              widget.game.friend.send(move.toString());
-              if (widget.game.winner(widget.game.gridList) == 1) {
-                widget.game.player = 0;
-              } else if (widget.game.winner(widget.game.gridList) == -1) {
-                widget.game.player = 0;
-              } else {
-                widget.game.player = -1;
+            setState(() {
+              if (widget.game.tempMove != null) {
+                int move = widget.game.tempMove![0];
+                widget.game.gridList = widget.game.finalizeMove();
+                widget.game.friend.send(move.toString());
+                if (widget.game.winner(widget.game.gridList) == 1) {
+                  widget.game.player = 0;
+                } else if (widget.game.winner(widget.game.gridList) == -1) {
+                  widget.game.player = 0;
+                } else {
+                  widget.game.player = -1;
+                }
+                Navigator.pop(context);
               }
-              Navigator.pop(context);
-            }
+            });
           }), icon: const Icon(Icons.done)),
           ]),
       ]),
