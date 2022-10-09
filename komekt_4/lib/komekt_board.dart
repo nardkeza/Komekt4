@@ -22,7 +22,7 @@ class Komekt4BoardPainter extends CustomPainter {
   int columns;
 
   @override
-  void paint(Canvas canvas, Size size) {
+  void paint(Canvas canvas, Size size) { // https://stackoverflow.com/questions/56923884/cutting-a-hole-in-a-shape-with-flutter-canvas
     final blackLine = Paint()..color = Colors.black;
     final blueFilled = Paint()
       ..color = Colors.blue
