@@ -121,6 +121,7 @@ class _CustomAlertState extends State<CustomAlert> {
             if (_formKey.currentState!.validate()) {
               if (widget.addFriend) {
                 widget.friends.addNewFriend(_name,_ip);
+                Navigator.pop(context);
               } else {
                 GameLogic newGame = GameLogic(friend: widget.friends.getFriend(_dropdownvalue)!, gameName: _name);
                 if (widget.onNewGame(newGame.friend.ipAddr, newGame)) {
