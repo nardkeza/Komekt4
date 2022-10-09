@@ -85,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen>{
       
     } else if (_friends.getFriendByIP(ip) != null){
       setState(() {
-        gamelist.addAll({ip: GameLogic(friend: _friends.getFriendByIP(ip)!)});
+        gamelist.addAll({ip: GameLogic(friend: _friends.getFriendByIP(ip)!, gameName: 'Game against ${_friends.getFriendByIP(ip)!.name}')});
         gamelist[ip]!.player = -1;
         if (gamelist[ip]!.player == -1) {
           gamelist[ip]!.gridList = gamelist[ip]!.makeMove(int.parse(received), -1, gamelist[ip]!.deepCopy(gamelist[ip]!.gridList));
@@ -108,8 +108,6 @@ class _HomeScreenState extends State<HomeScreen>{
     }
   }
   
-  
-  String gameName = "Testing";
 
 void _handleListClick(GameLogic game){
    Navigator.of(context).push(MaterialPageRoute(
@@ -117,10 +115,13 @@ void _handleListClick(GameLogic game){
 
 }
 
-void _passList(String ip, GameLogic game){
+bool _passList(String ip, GameLogic game){
   setState(() {
+    if (gamelist.keys.contains(ip)) {
       gamelist.addAll({ip: game});
+    }
   });
+  return !gamelist.keys.contains(ip);
 }
 
   // This widget is the root of your application.
@@ -134,7 +135,7 @@ void _passList(String ip, GameLogic game){
       body: ListView(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         children: gamelist.values.map((e) {
-          return Card(child:ListTile(title: Text(gameName), onTap: (){
+          return Card(child:ListTile(title: Text(e.gameName), onTap: (){
            _handleListClick(e);
           })
           );

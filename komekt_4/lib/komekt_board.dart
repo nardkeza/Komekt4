@@ -81,13 +81,18 @@ class Komekt4PiecePainter extends CustomPainter {
     final yellowPiece = Paint()
       ..color = Colors.yellow
       ..style = PaintingStyle.fill;
+    final greenPiece = Paint()
+      ..color = Colors.green
+      ..style = PaintingStyle.fill;
     for (int i = 0; i < rows; i++) {
       for (int j = 0; j < columns; j++) {
         final center = Offset(size.width/columns * (j + 0.5), size.height/rows * (i + 0.5));
         if (board.gridList[j][i] == 1) {
-        canvas.drawCircle(center, (size.width/columns) * .45, yellowPiece);
-        } else if (board.gridList[j][i] == -1) {
           canvas.drawCircle(center, (size.width/columns) * .45, yellowPiece);
+        } else if (board.gridList[j][i] == -1) {
+          canvas.drawCircle(center, (size.width/columns) * .45, redPiece);
+        } else if (board.gridList[j][i] == 2) {
+          canvas.drawCircle(center, (size.width/columns) * .45, greenPiece);
         }
       }
     }

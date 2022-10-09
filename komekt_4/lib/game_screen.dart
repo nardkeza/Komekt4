@@ -3,11 +3,9 @@ import 'package:komekt_4/game_logic.dart';
 import 'package:komekt_4/komekt_board.dart';
 
 class GameScreen extends StatefulWidget {
-  GameScreen({super.key, required this.game});
+  const GameScreen({super.key, required this.game});
 
   final GameLogic game;
-
-  String player_text = 'Player\'s turn';
 
   @override
   State<StatefulWidget> createState() => _GameScreenState();
@@ -21,7 +19,7 @@ class _GameScreenState extends State<GameScreen>{
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Game Name Placeholder'),),
+      appBar: AppBar(title: Text(widget.game.gameName),),
       body: Column(children: [
         Expanded(flex: 2, child: Container(color: Theme.of(context).backgroundColor)),
         Center(
@@ -60,24 +58,8 @@ class _GameScreenState extends State<GameScreen>{
                             setState(() {
                               if (widget.game.player == 1) {
                                 widget.game.gridList = widget.game.makeMove(index, 1, widget.game.deepCopy(widget.game.gridList));
-                                widget.game.friend.send(index.toString());
-                                if (widget.game.winner(widget.game.gridList) == 1) {
-                                  widget.game.player = 0;
-                                  widget.player_text = 'You won!';
-                                } else if (widget.game.winner(widget.game.gridList) == -1) {
-                                  widget.game.player = 0;
-                                  widget.player_text = 'You lost!';
-                                } else {
-                                  widget.game.player = -1;
-                                  widget.player_text = 'Opponent\'s turn';
-                                }
                               }
                             });
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(
-                                index.toString()
-                              ))
-                            );
                           },
                         ),
                       );
@@ -94,7 +76,21 @@ class _GameScreenState extends State<GameScreen>{
             color: Theme.of(context).backgroundColor,
             child: Column(children: [
               const Spacer(flex: 2),
-              Text(widget.player_text, textScaleFactor: 4,),
+              Flexible(flex: 4, child: Text(
+                (widget.game.winner(widget.game.gridList) == 1)?
+                'You Won!'
+                :
+                (widget.game.winner(widget.game.gridList) == -1)
+                ?
+                'You Lost!'
+                :
+                (widget.game.player == 1)
+                ?
+                'Player\'s turn'
+                :
+                'Opponent\'s turn',
+                textScaleFactor: 3,
+                )),
               const Spacer(flex: 3),
             ],),
         )),
@@ -104,7 +100,21 @@ class _GameScreenState extends State<GameScreen>{
           IconButton(iconSize: MediaQuery.of(context).size.width * 0.1, onPressed: (() {Navigator.pop(context);}), icon: const Icon(Icons.close)),
 
           const Spacer(),
-          IconButton(iconSize: MediaQuery.of(context).size.width * 0.1, onPressed: (() {}), icon: const Icon(Icons.done)),
+          IconButton(iconSize: MediaQuery.of(context).size.width * 0.1, onPressed: (() {
+            if (widget.game.tempMove != null) {
+              int move = widget.game.tempMove![0];
+              widget.game.gridList = widget.game.finalizeMove();
+              widget.game.friend.send(move.toString());
+              if (widget.game.winner(widget.game.gridList) == 1) {
+                widget.game.player = 0;
+              } else if (widget.game.winner(widget.game.gridList) == -1) {
+                widget.game.player = 0;
+              } else {
+                widget.game.player = -1;
+              }
+              Navigator.pop(context);
+            }
+          }), icon: const Icon(Icons.done)),
           ]),
       ]),
     );
