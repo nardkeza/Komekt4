@@ -13,11 +13,6 @@ class GameLogic{
   
 
   deepCopy(List<List<int>> org) { //Borrowed from code.reaper.12 on https://www.edureka.co/community/30218/deep-copying-a-2d-array-in-java
-
-        if (org == null) {
-            return null;
-        }
-
         final List<List<int>> res = List.generate(7, (i) => List.generate(6,(j)=> org[i][j], growable: false));
         return res;
     }
