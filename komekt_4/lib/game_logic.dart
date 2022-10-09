@@ -5,8 +5,10 @@ class GameLogic{
   int player = 1;
   List<List<int>> gridList = List.generate(7, (i) => List.generate(6,(index)=>0, growable: false));
   Friend friend;
+  List<int>? tempMove;
+  String gameName;
 
-  GameLogic({required this.friend});
+  GameLogic({required this.friend, required this.gameName});
 
   
 
@@ -16,7 +18,7 @@ class GameLogic{
             return null;
         }
 
-        final List<List<int>> res = List.generate(7, (i) => List.generate(6,(index)=>0, growable: false));
+        final List<List<int>> res = List.generate(7, (i) => List.generate(6,(j)=> org[i][j], growable: false));
         return res;
     }
 
@@ -24,16 +26,31 @@ class GameLogic{
         List<List<int>> newstate = deepCopy(state);
         if (getValidMoves(state).contains(x)) {
             for (int i = 0; i < 4; i++) {
-                if (newstate[x][i] == 0){
-                    newstate[x][i] = movingPlayer;
+                if (newstate[x][i] == 0 || newstate[x][i] == 2){
+                    if (tempMove != null) {
+                      newstate[tempMove![0]][tempMove![1]] = 0;
+                      tempMove = null;
+                    }
+                    newstate[x][i] = 2;
+                    tempMove = [x, i, movingPlayer];
                     break;
                 }
             }
-            return newstate;
-        } else {
-            return deepCopy(state);
         }
+        return newstate;
 
+
+    }
+
+    List<List<int>> finalizeMove() {
+      List<List<int>> newstate = deepCopy(gridList);
+      if (tempMove != null) {
+        if (newstate[tempMove![0]][tempMove![1]] == 2) {
+          newstate[tempMove![0]][tempMove![1]] = tempMove![2];
+          tempMove = null;
+        }
+      }
+      return newstate;
 
     }
 

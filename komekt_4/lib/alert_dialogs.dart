@@ -3,7 +3,7 @@ import 'package:komekt_4/friends.dart';
 import 'package:komekt_4/game_logic.dart';
 import 'package:komekt_4/game_screen.dart';
 
-typedef OnNewGameCallback = Function(String ip, GameLogic game);
+typedef OnNewGameCallback = bool Function(String ip, GameLogic game);
 
 class CustomAlert extends StatefulWidget {
   CustomAlert({super.key, required this.addFriend, required this.friends, required this.myIp, required this.onNewGame});
@@ -122,13 +122,18 @@ class _CustomAlertState extends State<CustomAlert> {
               if (widget.addFriend) {
                 widget.friends.addNewFriend(_name,_ip);
               } else {
-                GameLogic newGame = GameLogic(friend: widget.friends.getFriend(_dropdownvalue)!);
-                widget.onNewGame(newGame.friend.ipAddr, newGame);
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context)=> GameScreen(game: newGame)));
-                // create new game
-                // navigate to game screen
+                GameLogic newGame = GameLogic(friend: widget.friends.getFriend(_dropdownvalue)!, gameName: _name);
+                if (widget.onNewGame(newGame.friend.ipAddr, newGame)) {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context)=> GameScreen(game: newGame)));
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text(
+                      'You are already playing with that friend.'
+                    ))
+                  );
+                }
               }
             }
           },
