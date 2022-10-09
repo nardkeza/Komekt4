@@ -74,15 +74,25 @@ class _HomeScreenState extends State<HomeScreen>{
     });
   }
 
-   void _handleIncomingMessage(String ip, Uint8List incomingData) async {
+   void _handleIncomingMessage(String ip, Uint8List incomingData) {
     String received = String.fromCharCodes(incomingData);
-    await m.protect(() async {
-      if (gamelist.containsKey(ip)) {
+    if (gamelist.containsKey(ip)) {
+      setState(() {
         if (gamelist[ip]!.player == -1) {
           gamelist[ip]!.makeMove(int.parse(received), -1, gamelist[ip]!.deepCopy(gamelist[ip]!.gridList));
         }
+      });
+      
+    } else if (_friends.getFriendByIP(ip) != null){
+      setState(() {
+        gamelist.addAll({ip: GameLogic(friend: _friends.getFriendByIP(ip)!)});
+        gamelist[ip]!.player = -1;
+        if (gamelist[ip]!.player == -1) {
+          gamelist[ip]!.gridList = gamelist[ip]!.makeMove(int.parse(received), -1, gamelist[ip]!.deepCopy(gamelist[ip]!.gridList));
+          gamelist[ip]!.player = 1;
+        }
+      });
     }
-    });
     
   }
 
