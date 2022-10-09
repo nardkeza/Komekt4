@@ -81,7 +81,11 @@ class _HomeScreenState extends State<HomeScreen>{
         if (gamelist[ip]!.player == -1) {
           gamelist[ip]!.gridList = gamelist[ip]!.makeMove(int.parse(received), -1, gamelist[ip]!.deepCopy(gamelist[ip]!.gridList));
           gamelist[ip]!.gridList = gamelist[ip]!.finalizeMove();
-          gamelist[ip]!.player = 1;
+          if (gamelist[ip]!.winner(gamelist[ip]!.gridList) == 0) {
+            gamelist[ip]!.player = 1;
+          } else {
+            gamelist[ip]!.player = 0;
+          }
         }
       });
       
@@ -113,8 +117,16 @@ class _HomeScreenState extends State<HomeScreen>{
   
 
 void _handleListClick(GameLogic game){
-   Navigator.of(context).push(MaterialPageRoute(
-    builder: (context)=> GameScreen(game: game,)));
+  if (game.player != -1) {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context)=> GameScreen(game: game,)));
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text(
+        'It is not your turn yet'
+      ))
+    );
+  }
 
 }
 
@@ -138,11 +150,28 @@ bool _passList(String ip, GameLogic game){
       body: ListView(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         children: gamelist.values.map((e) {
-          return Card(child:ListTile(title: Text(e.gameName), onTap: (){
-           _handleListClick(e);
-          })
-          );
-        },).toList()
+          return Card(child:ListTile(
+            title: Text(e.gameName),
+            subtitle: Text(
+              (e.winner(e.gridList) == 1)
+              ?
+              'You Won!'
+              :
+              (e.winner(e.gridList) == -1)
+              ?
+              'You Lost!'
+              :
+              (e.player == 1)
+              ?
+              'Player\'s turn'
+              :
+              'Opponent\'s turn',
+            ),
+            onTap: (){
+              _handleListClick(e);
+            }
+          ));
+        }).toList()
           
         
       ),
