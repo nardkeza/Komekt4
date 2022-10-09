@@ -78,7 +78,9 @@ class _HomeScreenState extends State<HomeScreen>{
     String received = String.fromCharCodes(incomingData);
     if (gamelist.containsKey(ip)) {
       setState(() {
-        if (gamelist[ip]!.player == -1) {
+        if (received == 'del') {
+          gamelist.remove(ip);
+        }else if (gamelist[ip]!.player == -1) {
           gamelist[ip]!.gridList = gamelist[ip]!.makeMove(int.parse(received), -1, gamelist[ip]!.deepCopy(gamelist[ip]!.gridList));
           gamelist[ip]!.gridList = gamelist[ip]!.finalizeMove();
           if (gamelist[ip]!.winner(gamelist[ip]!.gridList) == 0) {
@@ -118,8 +120,10 @@ class _HomeScreenState extends State<HomeScreen>{
 
 void _handleListClick(GameLogic game){
   if (game.player != -1) {
-    Navigator.of(context).push(MaterialPageRoute(
-      builder: (context)=> GameScreen(game: game,)));
+    setState(() {
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context)=> GameScreen(game: game,)));
+    });
   } else {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text(
@@ -147,37 +151,51 @@ bool _passList(String ip, GameLogic game){
         title: const Text('Komekt 4'),
         actions: [IconButton(onPressed: (() {_displayAlertDialog(context, true);}), icon: const Icon(Icons.person_add))],
         ),
-      body: ListView(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
-        children: gamelist.values.map((e) {
-          return Card(child:ListTile(
-            title: Text(e.gameName),
-            subtitle: Text(
-              (e.winner(e.gridList) == 1)
-              ?
-              'You Won!'
-              :
-              (e.winner(e.gridList) == -1)
-              ?
-              'You Lost!'
-              :
-              (e.player == 1)
-              ?
-              'Player\'s turn'
-              :
-              'Opponent\'s turn',
-            ),
-            onTap: (){
-              _handleListClick(e);
-            }
-          ));
-        }).toList()
-          
-        
+        body: (gamelist.isEmpty)
+        ?
+        const Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Text('Press + to create a new game!', textScaleFactor: 1.5,),
+        )
+        :
+        ListView(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          children: gamelist.entries.map((game) {
+            return Card(child:ListTile(
+              title: Text(game.value.gameName),
+              subtitle: Text(
+                (game.value.winner(game.value.gridList) == 1)
+                ?
+                'You Won!'
+                :
+                (game.value.winner(game.value.gridList) == -1)
+                ?
+                'You Lost!'
+                :
+                (game.value.player == 1)
+                ?
+                'Player\'s turn'
+                :
+                'Opponent\'s turn',
+              ),
+              onTap: (){
+                _handleListClick(game.value);
+              },
+              onLongPress: () {
+                setState(() {
+                  gamelist.remove(game.key);
+                  game.value.friend.send('del');
+                });
+              },
+            ));
+          }).toList()          
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (() {
-          _displayAlertDialog(context, false); // needs to be passed friends object
+          setState(() {
+            _displayAlertDialog(context, false); 
+          });
+// needs to be passed friends object
         }),
         child: const Icon(Icons.add), 
       ),
