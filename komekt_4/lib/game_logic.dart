@@ -16,7 +16,7 @@ class GameLogic{
             return null;
         }
 
-        final List<List<int>> res = List.generate(7, (i) => List.generate(6,(index)=>0, growable: false));
+        final List<List<int>> res = List.generate(7, (i) => List.generate(6,(j)=> org[i][j], growable: false));
         return res;
     }
 
