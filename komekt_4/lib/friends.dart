@@ -12,7 +12,7 @@ class Friends extends Iterable<String>{
   void add(String name, String ip){
     Friend nf = Friend(ipAddr: ip, name: name);
     _namesOfFriends[name] = nf;
-    _ipsOfFriends[ip] = nf;
+    _ipsOfFriends[name] = nf;
   }
 
   void addNewFriend(String name, String ip){
