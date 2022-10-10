@@ -22,52 +22,55 @@ class _GameScreenState extends State<GameScreen>{
       appBar: AppBar(title: Text(widget.game.gameName),),
       body: Column(children: [ // https://stackoverflow.com/questions/56410074/how-to-set-the-background-color-of-a-row-in-flutter
         Expanded(flex: 2, child: Container(color: Theme.of(context).backgroundColor)),
-        Center(
-          child: AspectRatio(
-            aspectRatio: 7/6,
-            child: Stack(
-              children: [
-                Positioned.fill(
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      border: Border.all(width: 1.0, color: Colors.black38),
-                    ),
-                    child: Komekt4Pieces(
-                      board: widget.game
-                    ),
-                  ),
-                ),
-                Positioned.fill(
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      border: Border.all(width: 1.0, color: Colors.black38),
-                    ),
-                    child: const Komekt4Board(
-                      rows: 6,
-                      columns: 7,
+        Expanded(
+          flex: 5,
+          child: Center(
+            child: AspectRatio(
+              aspectRatio: 7/6,
+              child: Stack(
+                children: [
+                  Positioned.fill(
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 1.0, color: Colors.black38),
+                      ),
+                      child: Komekt4Pieces(
+                        board: widget.game
+                      ),
                     ),
                   ),
-                ),
-                Positioned.fill(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(widget.game.gridList.length, (index) {
-                      return Flexible(
-                        child: GestureDetector( // https://stackoverflow.com/questions/61277259/gesturedetector-not-detecting-inside-of-list-generate
-                          onTap: () {
-                            setState(() {
-                              if (widget.game.player == 1) {
-                                widget.game.gridList = widget.game.makeMove(index, 1, widget.game.deepCopy(widget.game.gridList));
-                              }
-                            });
-                          },
-                          behavior: HitTestBehavior.translucent,
-                        ),
-                      );
-                    }),
+                  Positioned.fill(
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 1.0, color: Colors.black38),
+                      ),
+                      child: const Komekt4Board(
+                        rows: 6,
+                        columns: 7,
+                      ),
+                    ),
+                  ),
+                  Positioned.fill(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(widget.game.gridList.length, (index) {
+                        return Flexible(
+                          child: GestureDetector( // https://stackoverflow.com/questions/61277259/gesturedetector-not-detecting-inside-of-list-generate
+                            onTap: () {
+                              setState(() {
+                                if (widget.game.player == 1) {
+                                  widget.game.gridList = widget.game.makeMove(index, 1, widget.game.deepCopy(widget.game.gridList));
+                                }
+                              });
+                            },
+                            behavior: HitTestBehavior.translucent,
+                          ),
+                        );
+                      }),
+                    )
                   )
-                )
-              ],
+                ],
+              ),
             ),
           ),
         ),
