@@ -63,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen>{
     // Thank you https://stackoverflow.com/questions/52411168/how-to-get-device-ip-in-dart-flutter
     String? ip = await NetworkInfo().getWifiIP();
     setState(() {
-      _ipaddress = "My IP: " + ip!;
+      _ipaddress = "My IP: ${ip!}";
     });
   }
     void _listenToSocket(Socket socket) {
