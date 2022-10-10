@@ -22,7 +22,8 @@ class _GameScreenState extends State<GameScreen>{
       appBar: AppBar(title: Text(widget.game.gameName),),
       body: Column(children: [ // https://stackoverflow.com/questions/56410074/how-to-set-the-background-color-of-a-row-in-flutter
         Expanded(flex: 2, child: Container(color: Theme.of(context).backgroundColor)),
-        Center(
+        Flexible(
+          flex: 9,
           child: AspectRatio(
             aspectRatio: 7/6,
             child: Stack(

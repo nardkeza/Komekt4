@@ -1,5 +1,25 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
+
+
+import 'package:komekt_4/game_screen.dart';
+import 'package:komekt_4/game_logic.dart';
+import 'package:komekt_4/friends.dart';
+
+
+Future main() async {
+  testWidgets('GameScreen_displays_game_name', (tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        home: GameScreen(game: 
+          GameLogic(friend: 
+            Friend(ipAddr: 'test_ip', name: 'test_name'), 
+            gameName: 'test_game_name'
+          ),
+        ),
+      ),
+    );
+
+    expect(find.text('test_game_name'), findsOneWidget);
+=======
 import 'package:komekt_4/home_screen.dart';
 import 'package:komekt_4/main.dart';
 import 'package:komekt_4/game_screen.dart';
@@ -11,6 +31,19 @@ void main() {
     final homePageFinder = find.text("Komekt4");
     expect(homePageFinder, findsOneWidget);
   });
+
+
+  testWidgets('GameScreen_displays_game_name', (tester) async {
+  await tester.pumpWidget(
+    MaterialApp(
+      home: GameScreen(game: 
+        GameLogic(friend: 
+          Friend(ipAddr: 'test_ip', name: 'test_name'), 
+          gameName: 'test_game_name'
+        ),
+      ),
+    ),
+  );
 
   testWidgets('Button displays dialog box', (WidgetTester tester) async {
     
@@ -37,6 +70,7 @@ void main() {
      // final gameScreenFinder = find.byKey(const Key("Game Screen"));
 
      // expect(gameScreenFinder, findsOneWidget);
+
 
 
   });
